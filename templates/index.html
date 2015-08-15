@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Paste</title>
+<link rel="stylesheet" href="static/css/style.css">
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="bar">{% if err %}<span style="color:red;">{{ err }}</span> &middot; {% endif %}<a href="#" id="sub">S</a>{% if raw %} &middot; <a href="#" id="raw">R</a>{% endif %}</div>
+<textarea class="main" id="paste">{{ content }}</textarea>
+<script src="https://code.jquery.com/jquery.js"></script>
+<script>
+var sAllow = false;
+$(window).bind('keydown', function(event) {
+    if (event.ctrlKey || event.metaKey) {
+        switch (String.fromCharCode(event.which).toLowerCase()) {
+        case 's':
+            event.preventDefault();
+            submit();
+            break;{% if raw %}
+        case 'r':
+            event.preventDefault();
+            raw();
+            break;
+        {% endif %}}
+    }
+    
+});
+function submit() {
+    if(!sAllow) return;
+    $.post("/json/add", {paste: $("#paste").val(),},
+    function(data,status){
+        if(data.code==0) {
+            window.location.href = "/"+data.msg;
+        } else {
+            alert("error: "+data.msg);
+        }
+    });
+}
+$('#paste').on('input propertychange paste', function() {sAllow = true;});
+$(document).ready(function(){$("#sub").click(function(){submit();});{% if raw %}$("#raw").click(function(){raw();});{% endif %}});
+{% if raw %}function raw() {
+    window.location.href = "/raw/{{ key }}";
+}
+{% endif %}</script>
+</body>
+</html>

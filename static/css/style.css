@@ -1,0 +1,36 @@
+body, html {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.main {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 5px;
+    box-sizing: border-box;
+	overflow-y: scroll;
+	resize: none;
+    border: none;
+}
+
+.bar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: #ccc;
+    border-radius: 2px;
+    padding: 2px;
+}
+
+a, a:hover, a:active, a:visited {
+    text-decoration: none;
+    color: black;
+}
+
+a:hover {
+    text-decoration: underline;
+}
